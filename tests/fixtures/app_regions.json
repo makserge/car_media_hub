@@ -1,0 +1,59 @@
+{
+  "version": 2,
+  "regions": [
+    {
+      "id": "mittelfranken",
+      "name": "Mittelfranken",
+      "files": [
+        {
+          "kind": "map",
+          "name": "mittelfranken.pmtiles",
+          "url": "mittelfranken.pmtiles",
+          "bytes": 61899309,
+          "sha256": "c11bcbe6335c9ee0ac0213991e631b647cc68d9a1b6c37d628c8e6368035ba74"
+        },
+        {
+          "kind": "routing",
+          "name": "oberpfalz-mittelfranken-tiles.tar",
+          "url": "oberpfalz-mittelfranken-tiles.tar",
+          "bytes": 227092480,
+          "sha256": "fc9f29056fcba3ed682e087f18d5f8aa7a07076722945b6ebdbf85fb0ca69a37"
+        },
+        {
+          "kind": "places",
+          "name": "mittelfranken-places.sqlite",
+          "url": "mittelfranken-places.sqlite",
+          "bytes": 69640192,
+          "sha256": "69c786aba719a8ece94c08cf3cc3b16bcbe17c2a132b0cfe7f0a192909841fcf"
+        }
+      ]
+    },
+    {
+      "id": "oberpfalz",
+      "name": "Oberpfalz",
+      "files": [
+        {
+          "kind": "map",
+          "name": "oberpfalz.pmtiles",
+          "url": "oberpfalz.pmtiles",
+          "bytes": 65959026,
+          "sha256": "d6a58f59bd45b890e5322c4d8e47b0feec6b2faf4a902aececdf435df82d83fd"
+        },
+        {
+          "kind": "routing",
+          "name": "oberpfalz-tiles.tar",
+          "url": "oberpfalz-tiles.tar",
+          "bytes": 107581440,
+          "sha256": "5bd8f0b307b851dbb5652daa4ea880ec322bcd0bd98a6ff664a12654acdb629d"
+        },
+        {
+          "kind": "places",
+          "name": "oberpfalz-places.sqlite",
+          "url": "oberpfalz-places.sqlite",
+          "bytes": 49041408,
+          "sha256": "e55610275ca888c74d58bfa0351b0f25ad4562603d9d9240299977872ed919fb"
+        }
+      ]
+    }
+  ]
+}

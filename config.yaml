@@ -1,0 +1,100 @@
+name: Car Media and Trips
+version: "0.0.6"
+slug: car_media_hub
+description: Watches an inbox and RSS feeds for new music, cleans it, asks you to approve or decline in Home Assistant, serves the library to the car app and collects its trips and energy use.
+url: https://github.com/makserge/car_media_hub
+arch:
+  - aarch64
+  - amd64
+init: false
+timeout: 30
+startup: application
+boot: auto
+homeassistant_api: true
+hassio_api: true
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:music-box-multiple
+panel_title: Car Media and Trips
+map:
+  - share:rw
+  - media:rw
+  - addon_config:rw
+backup_exclude:
+  - "browser-profile/**"
+  - "browser-incoming/**"
+  - "regions/**"
+ports:
+  "8100/tcp": null
+ports_description:
+  "8100/tcp": "Sync API for the car app and cyp (only used when sync_enabled)"
+options:
+  inbox_dir: /share/car_media_hub/inbox
+  staging_dir: /media/.car_media_hub/staging
+  library_dir: /media/music
+  scan_interval: 60
+  settle_seconds: 30
+  duplicate_action: delete
+  delete_source: true
+  dedupe_tracks: true
+  strip_all_tags: false
+  check_directory_names: false
+  notify_service: ""
+  pending_timeout_hours: 0
+  log_level: info
+  inbox_enabled: true
+  max_release_size_mb: 5000
+  min_free_space_gb: 50
+  pending_timeout_action: decline
+  sync_enabled: false
+  sync_token: ""
+  sync_dscp: true
+  rss_feed_url: ""
+  rss_check_time: "03:00"
+  rss_poll_minutes: 1440
+  rss_run_on_start: true
+  rss_max_items_per_scan: 10
+  rss_auto_approve: false
+  browser_enabled: false
+  browser_allow_unsandboxed: false
+  region_storage_dir: /share/car_media_hub/regions
+  region_max_file_mb: 8192
+  region_import_max_hours: 6
+  region_transfer_gzip: true
+  charger_refresh_days: 7
+  charger_source_url: ""
+schema:
+  inbox_dir: str
+  staging_dir: str
+  library_dir: str
+  scan_interval: int(10,86400)
+  settle_seconds: int(0,3600)
+  duplicate_action: list(delete|keep)
+  delete_source: bool
+  dedupe_tracks: bool
+  strip_all_tags: bool
+  check_directory_names: bool
+  notify_service: str?
+  pending_timeout_hours: int(0,8760)
+  log_level: list(debug|info|warning|error)
+  inbox_enabled: bool
+  max_release_size_mb: int(1,1000000)
+  min_free_space_gb: float(0,100000)
+  pending_timeout_action: list(decline|approve)
+  sync_enabled: bool
+  sync_token: password?
+  sync_dscp: bool
+  rss_feed_url: str?
+  rss_check_time: str?
+  rss_poll_minutes: int(5,10080)
+  rss_run_on_start: bool
+  rss_max_items_per_scan: int(1,1000)
+  rss_auto_approve: bool
+  browser_enabled: bool
+  browser_allow_unsandboxed: bool
+  region_storage_dir: str
+  region_max_file_mb: int(1,200000)
+  region_import_max_hours: float(0,720)
+  region_transfer_gzip: bool
+  charger_refresh_days: int(0,365)
+  charger_source_url: str?

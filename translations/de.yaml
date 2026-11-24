@@ -1,0 +1,105 @@
+configuration:
+  inbox_enabled:
+    name: Eingangsordner überwachen
+    description: Aktiviert den überwachten Eingangsordner (Archive oder Ordner in inbox_dir).
+  inbox_dir:
+    name: Eingangsordner
+    description: Ein eigener Ordner, der auf neue Veröffentlichungen überwacht wird; alles darin wird nach dem Import gelöscht (oder nach _processed verschoben). Unter /share oder /media, aber nie /share oder /media selbst und nie die Medienbibliothek oder den Staging-Ordner enthaltend oder darin liegend.
+  staging_dir:
+    name: Staging-Ordner
+    description: Arbeitsordner, in dem Veröffentlichungen bis zu Ihrer Entscheidung entpackt und bereinigt werden. Darf nicht der Bibliotheksordner sein (darin nur unter einem versteckten Punkt-Ordner). Am besten auf demselben Speicher wie die Bibliothek, dann ist das Freigeben ein sofortiges Verschieben statt Kopieren.
+  library_dir:
+    name: Bibliotheksordner
+    description: Ziel freigegebener Veröffentlichungen. Jede Veröffentlichung wird ein Unterordner.
+  scan_interval:
+    name: Scan-Intervall (Sekunden)
+    description: Wie oft der Eingangsordner nach neuen Einträgen durchsucht wird.
+  settle_seconds:
+    name: Wartezeit (Sekunden)
+    description: Ein Eintrag wird erst verarbeitet, wenn sich Größe und Änderungszeit so lange nicht geändert haben, damit unvollständige Kopien nicht übernommen werden.
+  duplicate_action:
+    name: Aktion bei Duplikaten
+    description: Was mit einem Eintrag passiert, der schon einmal importiert wurde - "delete" löscht ihn, "keep" lässt ihn liegen.
+  delete_source:
+    name: Quelle nach Verarbeitung löschen
+    description: Löscht den Eintrag nach der Verarbeitung. Ausgeschaltet wird er in den Unterordner _processed verschoben.
+  dedupe_tracks:
+    name: Bekannte Titel entfernen
+    description: Entfernt einzelne Titel, die schon in der Bibliothek sind (Vergleich per SHA-256 der Datei).
+  strip_all_tags:
+    name: Alle Tags entfernen
+    description: Entfernt alle Metadaten-Tags aus den übrigen Audiodateien.
+  check_directory_names:
+    name: Ordnernamen auf Kyrillisch prüfen
+    description: Entfernt auch jede Datei in einem Ordner, dessen Name kyrillische Zeichen enthält.
+  notify_service:
+    name: Benachrichtigungsdienst
+    description: Optionaler Mobile-Notify-Dienst ohne Präfix "notify." (zum Beispiel mobile_app_pixel_8). Aktiviert die Schaltflächen Freigeben/Ablehnen.
+  pending_timeout_hours:
+    name: Zeitlimit für offene Einträge (Stunden)
+    description: Entscheidet automatisch über Veröffentlichungen, die länger als diese Stunden warten (siehe "Aktion bei Zeitlimit"). 0 schaltet das Zeitlimit aus.
+  pending_timeout_action:
+    name: Aktion bei Zeitlimit
+    description: Was mit einer Veröffentlichung nach dem Zeitlimit passiert - "decline" löscht sie, "approve" verschiebt sie in die Bibliothek. Veröffentlichungen des eingebetteten Browsers werden nie automatisch freigegeben.
+  log_level:
+    name: Log-Stufe
+    description: Ausführlichkeit des Add-on-Logs.
+  max_release_size_mb:
+    name: Maximale Größe einer Veröffentlichung (MB)
+    description: Größere Veröffentlichungen werden übersprungen. Gilt für jede Download-Quelle (RSS, Plugins und den eingebetteten Browser).
+  min_free_space_gb:
+    name: Mindestens freier Speicher (GB)
+    description: Downloads, Staging und Entpacken pausieren (und werden später fortgesetzt, nichts geht verloren), solange weniger als dieser Speicher frei bliebe. 0 schaltet die Prüfung aus.
+  sync_enabled:
+    name: Sync-API aktivieren
+    description: Stellt die Bibliothek für die Auto-App und cyp auf Port 8100 bereit (Host-Port im Netzwerk-Bereich einstellen). Benötigt ein Sync-Token.
+  sync_token:
+    name: Sync-Token
+    description: Bearer-Token, das die Auto-App und cyp senden (mindestens 16 druckbare ASCII-Zeichen, keine Leerzeichen). Erforderlich, wenn die Sync-API aktiv ist.
+  sync_dscp:
+    name: Sync-Verkehr als Hintergrund markieren (DSCP CS1)
+    description: Markiert den Datei- und Probe-Verkehr der Sync-API mit DSCP CS1, damit Router und WLAN-Zugangspunkte, die das beachten, anderen Verkehr durch den Sync nicht ausbremsen. Ausschalten, wenn der Sync in einem WLAN langsam ist, das solchen Verkehr in eine sehr langsame Warteschlange legt. Standard an.
+  rss_feed_url:
+    name: RSS-Feed-URL
+    description: Feed (RSS oder Atom, http oder https), aus dem neue Veröffentlichungen importiert werden. Leer schaltet die RSS-Quelle aus.
+  rss_check_time:
+    name: RSS-Prüfzeit (HH:MM)
+    description: Prüft den Feed einmal täglich zu dieser lokalen Uhrzeit (HH:MM). "interval" prüft stattdessen alle "RSS-Intervall" Minuten (dieses Formular kann keinen leeren Wert speichern).
+  rss_poll_minutes:
+    name: RSS-Intervall (Minuten)
+    description: Minuten zwischen Feed-Prüfungen, wenn rss_check_time "interval" ist.
+  rss_run_on_start:
+    name: RSS beim Start prüfen
+    description: Prüft den Feed direkt nach dem Start des Add-ons, statt auf die nächste Prüfzeit zu warten.
+  rss_max_items_per_scan:
+    name: RSS-Veröffentlichungen pro Prüfung
+    description: Höchstzahl neuer Feed-Einträge, die pro Prüfung geladen werden.
+  rss_auto_approve:
+    name: RSS-Veröffentlichungen automatisch freigeben
+    description: Verschiebt bereinigte RSS-Veröffentlichungen ohne Rückfrage in die Bibliothek. Standardmäßig aus.
+  browser_enabled:
+    name: Eingebetteten Browser aktivieren
+    description: Zeigt RSS-Seiten in einem Browser innerhalb dieses Add-ons und lädt Archive daraus herunter. Standardmäßig aus. Aktiv läuft Chromium als unprivilegierter Benutzer ohne Supervisor-Token und hinter einem Filter, der private Adressen für das sperrt, was ein ehrlicher Browser anfragt. Dieser Filter hält einen kompromittierten Browser NICHT auf. Chromium öffnet nicht vertrauenswürdige Webseiten; halten Sie das Add-on aktuell und lassen Sie die Option aus, wenn Sie sie nicht brauchen. Der Browser hat nur einen Tab, daher werden Pop-ups und Werbefenster, die Sie nicht gerade selbst angeklickt haben, geschlossen. Chromium stammt aus dem Debian-Paket des Add-on-Images und ist nur so aktuell wie der Image-Build, daher das Add-on regelmäßig neu bauen oder aktualisieren. Der Browser startet nicht, wenn dieses Chromium zu alt ist. Unter Home Assistant OS bleibt diese Option erwartungsgemäß nicht verfügbar, weil der Sandbox-Test dort meist fehlschlägt.
+  browser_allow_unsandboxed:
+    name: Browser ohne Sandbox erlauben (GEFÄHRLICH)
+    description: WARNUNG. Standardmäßig startet der Browser nur, wenn die Sandbox von Chromium in diesem Container funktioniert. Auf Home Assistant OS ist das meist nicht der Fall. Mit dieser Option läuft Chromium ohne Sandbox. Ein einziger Browser-Exploit einer bösartigen Seite hat dann aus dem Add-on heraus direkten Netzwerkzugriff auf Home Assistant, andere Add-ons und Ihr gesamtes LAN, und der Adressfilter hält ihn nicht auf. Lassen Sie die Option aus, außer Sie nehmen dieses Risiko in Kauf.
+  region_storage_dir:
+    name: Ordner der Offline-Kartenregionen
+    description: Ordner mit den Offline-Kartenregionen (ein Unterordner je Region mit map.pmtiles, routing.tar, places.sqlite und manifest.json), die die Auto-App über die Sync-API herunterlädt. Muss unter /share, /media, /config oder /data/regions liegen (letzterer ist von Add-on-Backups ausgenommen; /share und /media sind in vollen Backups enthalten, große Pakete vergrößern sie) und darf weder Bibliotheks-, Staging- oder Inbox-Ordner sein noch diese enthalten oder darin liegen. Standard /share/car_media_hub/regions (Samba-Freigabe "share").
+  region_max_file_mb:
+    name: Größte Regionsdatei (MB)
+    description: Obergrenze für eine Regionsdatei, die du auf der Seite Regions hochlädst oder von einer URL importierst. Größere Übertragungen werden abgebrochen. Uploads und Importe lassen außerdem den Wert "Mindestens freier Speicher (GB)" (min_free_space_gb) frei und brechen darunter ab.
+  region_import_max_hours:
+    name: Zeitlimit eines Regionsimports (Stunden)
+    description: Ein Import von einer URL wird nach so vielen Stunden gestoppt (der Teil-Download bleibt erhalten und wird fortgesetzt). 0 bedeutet kein Limit. Standard 6.
+  region_transfer_gzip:
+    name: Komprimierte Regions-Downloads
+    description: Hält von jeder routing.tar und places.sqlite eine gzip-Kopie bereit (routing.tar.gz, places.sqlite.gz neben der Datei, im Hintergrund erstellt, nachdem die Datei gehasht ist) und bietet sie im Katalog an, damit eine aktuelle Auto-App deutlich weniger Bytes lädt und die Datei selbst entpackt. Die installierte Datei bleibt dieselbe. Braucht etwa 30-50 % dieser Dateien zusätzlich an Speicher. Ältere Auto-Apps laden weiter die unkomprimierte Datei. Aus löscht die Kopien. Standard an.
+  charger_refresh_days:
+    name: Aktualisierung der Ladesäulen-Datenbank (Tage)
+    description: Das Add-on lädt das Ladesäulenregister der Bundesnetzagentur selbst herunter und baut so oft die Ladesäulen-Datenbank für die Auto-App (1-365 Tage; die Auto-App holt sie dann wöchentlich ab). 0 schaltet die automatische Aktualisierung aus (die Schaltfläche auf der Seite Regions funktioniert weiter). Braucht Internetzugang. Standard 7.
+  charger_source_url:
+    name: Adresse der Ladesäulenregister-CSV (optional)
+    description: Direkte http(s)-Adresse der Ladesaeulenregister-CSV. Leer lassen, damit die neueste CSV automatisch auf der Seite der Bundesnetzagentur gesucht wird. Nur setzen, wenn die automatische Suche meldet, dass sich die Seite geändert hat.
+network:
+  8100/tcp: Sync-API für die Auto-App und cyp (nur bei aktivierter Sync-API genutzt)

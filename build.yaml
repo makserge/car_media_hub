@@ -1,0 +1,7 @@
+# armv7 is not built: HA deprecated 32-bit bases and Debian's Chromium on armhf is unverified.
+# Debian trixie base of the Home Assistant project (assumed tag; not pulled or built when this was written).
+# Chromium is installed from Debian's repository, whose security team updates it. The version is fixed when the
+# image is built: rebuild / update the add-on regularly.
+build_from:
+  aarch64: ghcr.io/home-assistant/aarch64-base-debian:trixie
+  amd64: ghcr.io/home-assistant/amd64-base-debian:trixie

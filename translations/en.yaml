@@ -1,0 +1,105 @@
+configuration:
+  inbox_enabled:
+    name: Watch inbox folder
+    description: Enable the watched inbox folder source (archives or folders dropped into inbox_dir).
+  inbox_dir:
+    name: Inbox directory
+    description: A dedicated folder watched for new releases (archives or folders); everything in it is deleted (or moved to _processed) after import. Under /share or /media, but never /share or /media itself, and never containing or inside the library or staging folder.
+  staging_dir:
+    name: Staging directory
+    description: Working folder where releases are extracted and cleaned while awaiting your decision. Must not be the library folder (inside it only under a hidden dot folder). Keep it on the same storage as the library so approving is an instant move instead of a copy (the default /media/.car_media_hub/staging suits the default library /media/music).
+  library_dir:
+    name: Library directory
+    description: Where approved releases are moved. Each release becomes a sub-folder.
+  scan_interval:
+    name: Scan interval (seconds)
+    description: How often the inbox is scanned for new entries.
+  settle_seconds:
+    name: Settle time (seconds)
+    description: An inbox entry is processed only after its size and modification time have not changed for this long, so partial copies are not picked up.
+  duplicate_action:
+    name: Duplicate action
+    description: What to do with an inbox entry that was already imported before - "delete" removes it, "keep" leaves it in place.
+  delete_source:
+    name: Delete source after processing
+    description: Delete the inbox entry once processed. When off, it is moved to the _processed sub-folder of the inbox.
+  dedupe_tracks:
+    name: Remove known tracks
+    description: Remove individual tracks that are already in the library (matched by SHA-256 of the file).
+  strip_all_tags:
+    name: Strip all tags
+    description: Remove all metadata tags from remaining audio files.
+  check_directory_names:
+    name: Check directory names for Cyrillic
+    description: Also remove every file located under a directory whose name contains Cyrillic characters.
+  notify_service:
+    name: Notify service
+    description: Optional mobile notify service without the "notify." prefix (for example mobile_app_pixel_8). Enables Approve/Decline action buttons.
+  pending_timeout_hours:
+    name: Pending timeout (hours)
+    description: Automatically decide on releases that wait longer than this many hours (see "Pending timeout action"). 0 disables the timeout.
+  pending_timeout_action:
+    name: Pending timeout action
+    description: What happens to a release that waited longer than the pending timeout - "decline" deletes it, "approve" moves it to the library.
+  log_level:
+    name: Log level
+    description: Verbosity of the add-on log.
+  max_release_size_mb:
+    name: Maximum release size (MB)
+    description: Releases larger than this are skipped. Applies to every download source (RSS and plugins).
+  min_free_space_gb:
+    name: Minimum free space (GB)
+    description: Downloads, staging and extraction stop (and resume later, nothing is lost) while less than this much space would stay free. 0 disables the check.
+  sync_enabled:
+    name: Enable sync API
+    description: Serve the library to the car app and cyp on port 8100 (set the host port in the Network panel). Requires a sync token.
+  sync_token:
+    name: Sync token
+    description: Bearer token the car app and cyp send (at least 16 printable ASCII characters, no spaces). Required when the sync API is enabled.
+  sync_dscp:
+    name: Mark sync traffic as background (DSCP CS1)
+    description: Marks the file and probe traffic of the sync API with DSCP CS1 so routers and Wi-Fi access points that honour it keep the sync from slowing down other traffic. Turn it off if the sync is slow on a Wi-Fi that puts such traffic into a very slow queue. Default on.
+  rss_feed_url:
+    name: RSS feed URL
+    description: Feed (RSS or Atom, http or https) to import new releases from. Empty disables the RSS source.
+  rss_check_time:
+    name: RSS check time (HH:MM)
+    description: Check the feed once a day at this local time (HH:MM). Enter "interval" to check every "RSS poll interval" minutes instead (this form cannot save an empty value).
+  rss_poll_minutes:
+    name: RSS poll interval (minutes)
+    description: Minutes between feed checks when rss_check_time is "interval".
+  rss_run_on_start:
+    name: Check RSS on start
+    description: Check the feed right after the add-on starts instead of waiting for the next check time.
+  rss_max_items_per_scan:
+    name: RSS releases per check
+    description: Maximum number of new feed items downloaded per check.
+  rss_auto_approve:
+    name: Approve RSS releases automatically
+    description: Move cleaned RSS releases straight to the library without asking. Off by default.
+  browser_enabled:
+    name: Enable the embedded browser
+    description: Show RSS item pages in a browser inside this add-on and download archives from them. Off by default. When on, Chromium runs as an unprivileged user without the Supervisor token and behind a filter that refuses private addresses for what an honest browser requests. That filter does NOT contain a compromised browser. Chromium opens untrusted web sites; keep the add-on updated and leave this off if you do not need it. The browser has a single tab, so pop-ups and ad windows that you did not just click open are closed. Chromium comes from the Debian package of the add-on image and is only as current as the image build, so rebuild or update the add-on regularly. The browser refuses to start when that Chromium is too old. On Home Assistant OS this option is expected to stay unavailable, because the sandbox probe usually fails there.
+  browser_allow_unsandboxed:
+    name: Allow the browser without its sandbox (DANGEROUS)
+    description: WARNING. By default the browser starts only when Chromium's own sandbox works in this container. On Home Assistant OS it usually does not. With this option on, Chromium runs without the sandbox, so a single browser exploit from a malicious page then gets direct network access from inside the add-on to Home Assistant, other add-ons and your whole LAN, and the address filter does not stop it. Leave this off unless you accept that risk.
+  region_storage_dir:
+    name: Offline map regions folder
+    description: Folder with the offline map regions (one sub-folder per region with map.pmtiles, routing.tar, places.sqlite and manifest.json) that the car app downloads over the sync API. Must be below /share, /media, /config or /data/regions (the last one is left out of add-on backups; /share and /media are part of full backups, so large packs enlarge them) and must not be, contain or lie inside the library, staging or inbox folder. Default /share/car_media_hub/regions (Samba share "share").
+  region_max_file_mb:
+    name: Largest region file (MB)
+    description: Upper limit for one region file that you upload or import from a URL on the Regions page. Larger transfers are stopped. Uploads and imports also keep "Minimum free space (GB)" (min_free_space_gb) free on the disk and are aborted below it.
+  region_import_max_hours:
+    name: Time limit of a region import (hours)
+    description: One import from a URL is stopped after this many hours (the partial download is kept and resumes). 0 means no limit. Default 6.
+  region_transfer_gzip:
+    name: Compressed region downloads
+    description: Keep a gzip copy of every routing.tar and places.sqlite (routing.tar.gz, places.sqlite.gz next to the file, built in the background after the file is hashed) and offer it in the catalogue, so a current car app downloads far fewer bytes and unpacks the file itself. The installed file is the same. Needs about 30-50 % of those files in extra disk space. Older car apps keep downloading the plain file. Off deletes the copies. Default on.
+  charger_refresh_days:
+    name: Charger database refresh (days)
+    description: The add-on downloads the Bundesnetzagentur charging station register itself and builds the charger database for the car app this often (1-365 days; the car app then pulls it weekly). 0 turns the automatic refresh off (the button on the Regions page still works). Needs internet access. Default 7.
+  charger_source_url:
+    name: Charger register CSV address (optional)
+    description: Direct http(s) address of the Ladesaeulenregister CSV. Leave empty to find the newest CSV on the Bundesnetzagentur page automatically. Set it only when the automatic search reports that the page changed.
+network:
+  8100/tcp: Sync API for the car app and cyp (only used when the sync API is enabled)
